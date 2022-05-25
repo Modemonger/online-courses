@@ -4,7 +4,7 @@ const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
 const mongoose = require("mongoose");
 const throwCustomError = require("../utils/throwCustomError");
-// const { deleteUser } = require("../services/usersServices");
+require("dotenv").config({ path: __dirname + "/../.env" });
 
 // function to create a token
 const generateToken = (id) => {
@@ -15,50 +15,57 @@ const generateToken = (id) => {
 
 function checkPwd(str) {
   if (str.length < 6) {
-    throw throwCustomError("Password is too short", 400);
+    const error = throwCustomError("Password is too short", 400);
+    res.status(error.status).json(error);
   } else if (str.length > 24) {
-    throw throwCustomError("Password is too long", 400);
+    const error = throwCustomError("Password is too long", 400);
+    res.status(error.status).json(error);
   } else if (str.search(/\d/) == -1) {
-    throw throwCustomError("Password must contain a number", 400);
+    const error = throwCustomError("Password must contain a number", 400);
+    res.status(error.status).json(error);
   } else if (str.search(/[a-zA-Z]/) == -1) {
-    throw throwCustomError("Password must contain letters", 400);
-  } else if (str.search(/[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/) == -1) {
-    throw throwCustomError("Password must contain at least one symbol", 400);
+    const error = throwCustomError("Password must contain letters", 400);
+    res.status(error.status).json(error);
   }
   return(0);
 }
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, status } = req.body;
 
-  if (!username || !email || !password) {
-    throw throwCustomError("Please add all fields", 400);
+  if (!username || !email || !password || !status) {
+    const error = throwCustomError("Please add all fields", 400);
+    res.status(error.status).json(error);
   }
 
   checkPwd(password);
 
   const userExists = await User.findOne({ email: email });
 
-  const userNameTaken = await User.findOne({ name: username });
+  const userNameTaken = await User.findOne({ username: username });
 
   if (userExists) {
-    res.status(400);
-    throw throwCustomError("Email already exists", 400);
-  } else if (userNameTaken) {
-    res.status(400);
-    throw throwCustomError("Username is taken", 400);
+    const error = throwCustomError("Email already exists", 400);
+    res.status(error.status).json(error);
+  }
+
+  if (userNameTaken) {
+    const error = throwCustomError("Username is taken", 400);
+    res.status(error.status).json(error);
   }
 
   const salt = randomBytes(16).toString("hex");
   const hashedPassword = scryptSync(password, salt, 64).toString("hex");
 
   const user = await User.create({
-    username,
-    email,
+    username: username,
+    email: email,
     password: `${salt}:${hashedPassword}`,
+    status: status,
   });
 
   if (user) {
+
     res.status(201).json({
       status: "success",
       responseBody:{
@@ -66,19 +73,20 @@ const registerUser = asyncHandler(async (req, res) => {
         id: user._id,
         username: user.username,
         email: user.email,
+        status: user.status,
         token: generateToken(user._id),
       },
     });
   } else {
-    res.status(400);
-    throw throwCustomError("Invalid user data", 400);
+    const error = throwCustomError("Invalid user data", 400);
+    res.status(error.status).json(error);
   }
 });
 
 const loginUser = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
+  const { username, password } = req.body;
 
-  const user = await User.findOne({ email: email });
+  const user = await User.findOne({ username: username });
 
   if (user) {
     const [salt, key] = user.password.split(":");
@@ -98,14 +106,12 @@ const loginUser = asyncHandler(async (req, res) => {
         },
       });
     } else {
-      res.status(400);
-      throw throwCustomError("User was not found", 400);
+      const error = throwCustomError("Wrong password", 400);
+      res.status(error.status).json(error);
     }
   } else {
-    res.status(400);
-    const error = new Error("User was not found");
-    error.statusCode = 400;
-    throw error;
+    const error = throwCustomError("User was not found", 400);
+    res.status(error.status).json(error);
   }
 });
 
@@ -142,7 +148,7 @@ const getUser = asyncHandler(async (req, res) => {
 const updateUser = asyncHandler(async (req, res) => {
   // get the user we will be updating
   const userId = mongoose.Types.ObjectId(req.user.decodedId);
-  console.log(req.user.decodedId, userId);
+
   const decodedUsersIdFromJwt = req.user.decodedId;
 
   if (!userId) {
@@ -206,17 +212,20 @@ const deleteUserHandler = asyncHandler(async (req, res) => {
     throw throwCustomError("You're trying to delete other user!", 400);
   }
 
-//   const deletedUser = await deleteUser(userId);
+  await EventModel.deleteMany({user: userId});
+  let existingUser = await UserModel.findByIdAndDelete(userId);
 
-//   res.json({
-//     status: "success",
-//     responseBody:{
-//       message: "User data deleted at user id",
-//       id: deletedUser._id,
-//       username: deletedUser.username,
-//       email: deletedUser.email,
-//     },
-//   });
+  const deletedUser = existingUser._doc;
+
+  res.json({
+    status: "success",
+    responseBody:{
+      message: "User data deleted at user id",
+      id: deletedUser._id,
+      username: deletedUser.username,
+      email: deletedUser.email,
+    },
+  });
 });
 
 module.exports = {
