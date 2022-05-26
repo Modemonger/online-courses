@@ -32,6 +32,7 @@ function checkPwd(str) {
 
 const registerUser = asyncHandler(async (req, res) => {
   const { username, email, password, status } = req.body;
+  console.log(username, email, password, status);
 
   if (!username || !email || !password || !status) {
     const error = throwCustomError("Please add all fields", 400);

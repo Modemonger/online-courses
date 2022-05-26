@@ -5,10 +5,12 @@
  */
 
 var app = require('../app');
-var debug = require('debug')('back-end:server');
 var http = require('http');
 const mongoose = require('mongoose');
 require("dotenv").config({ path: __dirname + "/../.env" });
+const cors = require('cors');
+
+app.use(cors());
 
 /**
  * Get port from environment and store in Express.
