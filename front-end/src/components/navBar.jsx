@@ -13,7 +13,7 @@ const NavBar = () => {
                     <Link to='/'>Home</Link>
                     <Link to='/signup'>Signup</Link>
                     <Link to='/login'>Login</Link> 
-                    <SearchBar />
+                    {/* <SearchBar /> */}
                 </div>
                 
                 <Routes>

@@ -17,32 +17,34 @@ function checkPwd(str) {
   if (str.length < 6) {
     const error = throwCustomError("Password is too short", 400);
     res.status(error.status).json(error);
-  } else if (str.length > 24) {
+  }
+  if (str.length > 24) {
     const error = throwCustomError("Password is too long", 400);
     res.status(error.status).json(error);
-  } else if (str.search(/\d/) == -1) {
+  }
+  if (str.search(/\d/) == -1) {
     const error = throwCustomError("Password must contain a number", 400);
     res.status(error.status).json(error);
-  } else if (str.search(/[a-zA-Z]/) == -1) {
+  }
+  if (str.search(/[a-zA-Z]/) == -1) {
     const error = throwCustomError("Password must contain letters", 400);
     res.status(error.status).json(error);
   }
-  return(0);
 }
 
 const registerUser = asyncHandler(async (req, res) => {
   const { username, email, password, status } = req.body;
-  console.log(username, email, password, status);
+  
 
   if (!username || !email || !password || !status) {
     const error = throwCustomError("Please add all fields", 400);
     res.status(error.status).json(error);
   }
-
-  checkPwd(password);
-
+  console.log(username, email, password, status);
+  //checkPwd(password);
+  
   const userExists = await User.findOne({ email: email });
-
+  
   const userNameTaken = await User.findOne({ username: username });
 
   if (userExists) {
@@ -69,8 +71,8 @@ const registerUser = asyncHandler(async (req, res) => {
 
     res.status(201).json({
       status: "success",
+      message: "User registered",
       responseBody:{
-        message: "User registered",
         id: user._id,
         username: user.username,
         email: user.email,
@@ -98,11 +100,12 @@ const loginUser = asyncHandler(async (req, res) => {
     if (match) {
       res.status(201).json({
         status: "success",
+        message: "User loged in",
         responseBody:{
-          message: "User loged in",
           id: user._id,
           username: user.username,
           email: user.email,
+          status: user.status,
           token: generateToken(user._id),
         },
       });
@@ -117,8 +120,6 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 const getUser = asyncHandler(async (req, res) => {
-  // did this because mongoose expects an object
-  // and this lets us see more possible errors like invalid id lenghts
   const userId = mongoose.Types.ObjectId(req.user.decodedId);
   const decodedUsersIdFromJwt = req.user.decodedId;
 
