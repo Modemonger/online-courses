@@ -16,7 +16,7 @@ export const HomePage = () => {
   return (
     <div className='homepage'>
         <div className="recomended">
-            recomended { user.id ? 'for ' + user.username : ''  }
+            recomended { user.id ? 'for ' + user.username : null  }
         </div>
         <div className="stats">
             stats

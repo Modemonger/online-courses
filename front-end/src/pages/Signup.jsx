@@ -3,17 +3,20 @@ import axios from 'axios'
 import qs from 'qs'
 import { useState } from 'react';
 import { UserContext } from '../contexts/UserContext';
-
+import { useNavigate } from 'react-router-dom';
 
 export const Signup = () => {
 
     const { user, setUser } = useContext(UserContext);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const tmp = JSON.parse(window.localStorage.getItem('user'));
         // console.log(tmp);
         if(tmp)
             setUser(tmp);
+            navigate('/');
     }, [])
 
     const handleSubmit = (event) => {
@@ -65,7 +68,7 @@ export const Signup = () => {
     }
 
   return (
-    <div className='signupPage'>
+    <div className='signup'>
         <div className='signupCard'>
             <form className='signupForm' onSubmit={handleSubmit}>
                 <label>

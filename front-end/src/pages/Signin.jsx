@@ -12,10 +12,13 @@ export const Signin = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const tmp = JSON.parse(window.localStorage.getItem('user'));
-        // console.log(tmp);
-        if(tmp)
-            setUser(tmp);
+        const storage = JSON.parse(window.localStorage.getItem('user'));
+        // console.log(storage);
+        if(storage){
+            setUser(storage);
+            navigate('/');
+        }
+            
     }, [])
 
     const handleSubmit = (event) => {
@@ -49,7 +52,7 @@ export const Signin = () => {
             });
         });
     }
-    
+
     const handleChange = (event) => {
         const { name, value } = event.target;
     
@@ -61,7 +64,7 @@ export const Signin = () => {
     }
 
   return (
-    <div className='signinPage'>
+    <div className='signin'>
         <div className="signinCard">
             <form className='signinForm' onSubmit={handleSubmit}>
                 <label>

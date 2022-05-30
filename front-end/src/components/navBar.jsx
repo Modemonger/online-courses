@@ -5,7 +5,7 @@ import { UserContext } from '../contexts/UserContext';
 
 const NavBar = () => {
 
-    const { user, setUser } = useContext(UserContext);
+    const { user } = useContext(UserContext);
 
     return (
         <div className='nav'>
@@ -13,6 +13,7 @@ const NavBar = () => {
                 user.id ? 
                 <div className="navbar">
                     <Link to='/'>Home</Link>
+                    <Link to='/courses'>Courses</Link>
                     <SearchBar />
                 </div>
                 :
