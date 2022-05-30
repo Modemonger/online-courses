@@ -6,6 +6,7 @@ const {
     getCourse,
     getUserCourses,
     deleteCourse,
+    addLike,
 
 } = require("../controllers/courseController");
 const { protect } = require("../middleware/authMiddleware");
@@ -19,5 +20,7 @@ router.get('/get-course/:id', getCourse);
 router.get('/get-user-courses/:id', getUserCourses);
 
 router.delete('/delete-course/:id', deleteCourse);
+
+router.post('/like/:userId/:courseId', addLike);
 
 module.exports = router;

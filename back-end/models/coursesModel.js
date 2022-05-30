@@ -1,5 +1,12 @@
 const mongoose = require("mongoose");
 
+const likesSchema = mongoose.Schema({
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    }
+});
+
 const courseSchema = mongoose.Schema(
   {
     owner: {
@@ -18,6 +25,7 @@ const courseSchema = mongoose.Schema(
         type: String,
         required: [true, 'Please provide a video'],
     },
+    likes: [likesSchema],
   },
   {
     timestamp: true,

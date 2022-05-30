@@ -49,7 +49,8 @@ const getCourses = asyncHandler(async (req, res) => {
     if (courses) {
       res.status(201).send(courses);
     } else {
-      throw throwCustomError("courses not found", 400);
+        const error = throwCustomError('Course not found', 400);
+        res.status(error.status).json(error);
     }
 
 });
@@ -63,7 +64,8 @@ const getCourse = asyncHandler(async (req, res) => {
     if (courses) {
       res.status(201).send(courses);
     } else {
-      throw throwCustomError("courses not found", 400);
+        const error = throwCustomError('Courses not found', 400);
+        res.status(error.status).json(error);
     }
 
 });
@@ -77,7 +79,8 @@ const getUserCourses = asyncHandler(async (req, res) => {
     if (courses) {
       res.status(201).send(courses);
     } else {
-      throw throwCustomError("courses not found", 400);
+        const error = throwCustomError('Course not found', 400);
+        res.status(error.status).json(error);
     }
 
 });
@@ -92,11 +95,54 @@ const deleteCourse = asyncHandler(async (req, res) => {
 
 });
 
+const addLike = asyncHandler(async (req, res) => {
+
+    const { userId, courseId } = req.params;
+
+    const course = await Course.findOne({_id: courseId}, '-__v');
+
+    if(!course.likes.filter(e => e.userId.toString() === mongoose.Types.ObjectId(userId).toString()).length > 0){
+        course.likes.push({userId: userId});
+        await course.save(function (err) {
+            if (err) {
+                const error = throwCustomError('Course not found', 400);
+                res.status(error.status).json(error);
+                return
+            }
+        });
+
+        res.status(201).send(course);
+        return
+    }
+    
+    if(course.likes.filter(e => e.userId.toString() === mongoose.Types.ObjectId(userId).toString()).length > 0){
+        const like = course.likes.filter(e => e.userId.toString() === mongoose.Types.ObjectId(userId).toString());
+
+        const index = course.likes.indexOf(like[0]);
+
+        course.likes.splice(index, 1);
+        await course.save(function (err) {
+            if (err) {
+                const error = throwCustomError('Course not found', 400);
+                res.status(error.status).json(error);
+                return
+            }
+        });
+
+        res.status(201).send(course);
+        return
+    }
+    
+    const error = throwCustomError('Encountered an issue', 400);
+    res.status(error.status).json(error);
+
+});
+
 module.exports = {
     createCourse,
     getCourses,
     getCourse,
     getUserCourses,
     deleteCourse,
-    
+    addLike,
 }
