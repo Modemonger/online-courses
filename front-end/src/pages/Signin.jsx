@@ -1,18 +1,26 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import axios from 'axios'
 import qs from 'qs'
 import { useState } from 'react';
+import { UserContext } from '../contexts/UserContext';
+import { useNavigate } from 'react-router-dom';
 
 export const Signin = () => {
 
-    const [user, setUser] = useState({
-        username: '',
-        password: '',
-    });
+    const { user, setUser } = useContext(UserContext);
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const tmp = JSON.parse(window.localStorage.getItem('user'));
+        // console.log(tmp);
+        if(tmp)
+            setUser(tmp);
+    }, [])
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(user);
+        //console.log(user);
 
         var data = qs.stringify({
             'username': user.username,
@@ -29,8 +37,9 @@ export const Signin = () => {
             
         axios(config)
         .then(function (response) {
-            console.log(response.data.responseBody);
+            // console.log(response.data.responseBody);
             window.localStorage.setItem('user', JSON.stringify(response.data.responseBody));
+            navigate('/');
         })
         .catch(function (error) {
             console.log(error);
@@ -40,6 +49,7 @@ export const Signin = () => {
             });
         });
     }
+    
     const handleChange = (event) => {
         const { name, value } = event.target;
     
@@ -47,6 +57,7 @@ export const Signin = () => {
             ...user,
             [name]: value
         });
+        
     }
 
   return (
@@ -55,12 +66,20 @@ export const Signin = () => {
             <form className='signinForm' onSubmit={handleSubmit}>
                 <label>
                     Username:
-                    <input type={'text'} name="username" id="username" value={user.username} onChange={handleChange}/>
+                    <input type={'text'} 
+                        name="username" 
+                        id="username" 
+                        value={user ? user.username : ''} 
+                        onChange={handleChange}/>
                 </label>
                 
                 <label>
                     Password:
-                    <input type={'password'} name="password" id="password" value={user.password} onChange={handleChange}/>
+                    <input type={'password'}
+                        name="password" 
+                        id="password" 
+                        value={user ? user.password : ''} 
+                        onChange={handleChange}/>
                 </label>
                 
                 <input type={'submit'} value="SIGNIN" />

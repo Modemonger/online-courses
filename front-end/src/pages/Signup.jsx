@@ -1,20 +1,24 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import axios from 'axios'
 import qs from 'qs'
 import { useState } from 'react';
+import { UserContext } from '../contexts/UserContext';
+
 
 export const Signup = () => {
 
-    const [user, setUser] = useState({
-        username: '',
-        email: '',
-        password: '',
-        status: '',
-    });
+    const { user, setUser } = useContext(UserContext);
+
+    useEffect(() => {
+        const tmp = JSON.parse(window.localStorage.getItem('user'));
+        // console.log(tmp);
+        if(tmp)
+            setUser(tmp);
+    }, [])
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(user);
+        // console.log(user);
 
         if(user.password === user.confirmPassword){
             var data = qs.stringify({
@@ -57,6 +61,7 @@ export const Signup = () => {
             ...user,
             [name]: value
         });
+        console.log(user);
     }
 
   return (
@@ -65,22 +70,22 @@ export const Signup = () => {
             <form className='signupForm' onSubmit={handleSubmit}>
                 <label>
                     Username:
-                    <input type={'text'} name='username' id='username' value={user.username} onChange={handleChange} />
+                    <input type={'text'} name='username' id='username' value={user ? user.username : ''} onChange={handleChange} />
                 </label>
 
                 <label>
                     Email:
-                    <input type={'email'} name='email' id='email' value={user.email} onChange={handleChange} />
+                    <input type={'email'} name='email' id='email' value={user ? user.email : ''} onChange={handleChange} />
                 </label>
                 
                 <label>
                     Password:
-                    <input type={'password'} name='password' id='password' value={user.password} onChange={handleChange} />
+                    <input type={'password'} name='password' id='password' value={user ? user.password : ''} onChange={handleChange} />
                 </label>
                 
                 <label>
                     Confirm password:
-                    <input type={'password'} name='confirmPassword' id='confirmPassword' value={user.confirmPassword} onChange={handleChange} />
+                    <input type={'password'} name='confirmPassword' id='confirmPassword' value={user ? user.confirmPassword : ''} onChange={handleChange} />
                 </label>
 
                 <label>

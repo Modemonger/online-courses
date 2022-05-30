@@ -2,6 +2,12 @@ import { createContext, useReducer } from "react";
 import UserReducer from "../reducers/UserReducer";
 
 const initialState = {
+    user: {
+        username: '',
+        email: '',
+        password: '',
+        status: '',
+    },
     transactions:[
 
     ],
@@ -14,6 +20,13 @@ export const UserContext = createContext(initialState);
 
 export const UserProvider = ({children}) => {
     const [state, dispatch] = useReducer(UserReducer,initialState);
+
+    function setUser(id) {
+        dispatch({
+            type: 'USER',
+            payload: id
+        });
+    }
 
     function deleteTransaction(id) {
         dispatch({
@@ -46,10 +59,12 @@ export const UserProvider = ({children}) => {
     return(
         <UserContext.Provider value={{
             transactions: state.transactions,
+            user: state.user,
             deleteTransaction,
             addTransaction,
             deleteSaved,
-            addSaved
+            addSaved,
+            setUser,
         }}>
             {children}
         </UserContext.Provider>
