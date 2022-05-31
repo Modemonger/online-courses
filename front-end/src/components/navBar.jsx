@@ -1,30 +1,54 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { searchBar as SearchBar } from './searchBar';
+import { SearchBar } from './searchBar';
 import { UserContext } from '../contexts/UserContext';
 
 const NavBar = () => {
 
-    const { user } = useContext(UserContext);
+    const { user, setUser } = useContext(UserContext);
+    const [status, setStatus] = useState('');
 
-    return (
-        <div className='nav'>
-            {   
-                user.id ? 
+    useEffect(() => {
+        const tmp = JSON.parse(window.localStorage.getItem('user'));
+        // console.log(tmp);
+        if(tmp){
+            setUser(tmp);
+            setStatus(tmp.status);
+        }
+          
+    }, [])
+
+    switch (status) {
+        case 'Learner':
+            return(
                 <div className="navbar">
                     <Link to='/'>Home</Link>
                     <Link to='/courses'>Courses</Link>
                     <SearchBar />
                 </div>
-                :
+            );
+            break;
+        case 'Lecturer':
+            return(
                 <div className="navbar">
                     <Link to='/'>Home</Link>
+                    <Link to='/courses'>Courses</Link>
+                    <SearchBar />
+                </div>
+            );
+            break;
+    
+        default:
+            return(
+                <div className="navbar">
+                    <Link to='/'>Home</Link>
+                    <Link to='/courses'>Courses</Link>
                     <Link to='/signup'>Signup</Link>
                     <Link to='/login'>Login</Link> 
                 </div>
-            }
-        </div>
-    );
+            );
+            break;
+    }
 };
 
 export default NavBar;

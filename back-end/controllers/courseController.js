@@ -47,6 +47,7 @@ const getCourses = asyncHandler(async (req, res) => {
     const courses = await Course.find({}, '-__v');
   
     if (courses) {
+        // console.log(courses)
       res.status(201).send(courses);
     } else {
         const error = throwCustomError('Course not found', 400);
@@ -62,7 +63,7 @@ const getCourse = asyncHandler(async (req, res) => {
     const courses = await Course.find({_id: id}, '-__v');
   
     if (courses) {
-      res.status(201).send(courses);
+      res.status(201).send(courses[0]);
     } else {
         const error = throwCustomError('Courses not found', 400);
         res.status(error.status).json(error);
@@ -138,6 +139,32 @@ const addLike = asyncHandler(async (req, res) => {
 
 });
 
+function compare( a, b ) {
+    if ( a.createdAt < b.createdAt ){
+      return 1;
+    }
+    if ( a.createdAt > b.createdAt ){
+      return -1;
+    }
+    return 0;
+  }
+
+const getRecent = asyncHandler(async (req, res) => {
+    
+    const courses = await Course.find({}, '-__v');
+
+    if (courses) {
+        // console.log(courses, 'courses');
+        const sortedCourses = courses.sort(compare);
+        // console.log(sortedCourses, 'sorted');
+        res.status(201).send(sortedCourses);
+    } else {
+        const error = throwCustomError('Course not found', 400);
+        res.status(error.status).json(error);
+    }
+
+});
+
 module.exports = {
     createCourse,
     getCourses,
@@ -145,4 +172,5 @@ module.exports = {
     getUserCourses,
     deleteCourse,
     addLike,
+    getRecent,
 }

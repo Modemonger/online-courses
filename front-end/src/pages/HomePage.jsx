@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import { useState } from 'react';
 import { UserContext } from '../contexts/UserContext';
+import UserPage from './UserPage';
 
 export const HomePage = () => {
 
@@ -15,12 +16,7 @@ export const HomePage = () => {
   
   return (
     <div className='homepage'>
-        <div className="recomended">
-            recomended { user.id ? 'for ' + user.username : null  }
-        </div>
-        <div className="stats">
-            stats
-        </div>
+        <UserPage />
     </div>
   )
 }
