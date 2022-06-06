@@ -6,21 +6,16 @@ import { UserContext } from '../contexts/UserContext';
 const NavBar = () => {
 
     const { user, setUser } = useContext(UserContext);
-    const [status, setStatus] = useState('');
-
-    useEffect(() => {
-        setStatus(user.status);
-                 
-    }, [user])
 
     const handleSingout = (e) => {
-        e.preventDefault();
+        // e.preventDefault();
+        // console.log('bro wtf')
         localStorage.removeItem('user');
-        const storage = JSON.parse(window.localStorage.getItem('user'));
         setUser({});
+        
     }
 
-    switch (status) {
+    switch (user.status) {
         case 'Learner':
             return(
                 <div className="navbar">
@@ -36,7 +31,7 @@ const NavBar = () => {
                 <div className="navbar">
                     <Link to='/'>Home</Link>
                     <Link to='/courses'>Courses</Link>
-                    <Link to='/'>Singout</Link>
+                    <Link to='/' onClick={handleSingout}>Singout</Link>
                     <SearchBar />
                 </div>
             );

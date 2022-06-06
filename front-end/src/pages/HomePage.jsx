@@ -2,7 +2,8 @@ import React, { useContext, useEffect } from 'react'
 import { useState } from 'react';
 import { UserContext } from '../contexts/UserContext';
 import UserPage from './UserPage';
-
+import CreatorPage from './CreatorPage';
+import { Signup } from './Signup';
 export const HomePage = () => {
 
   const { user, setUser } = useContext(UserContext);
@@ -14,9 +15,28 @@ export const HomePage = () => {
       setUser(tmp);
   }, [])
   
-  return (
-    <div className='homepage'>
-        <UserPage />
-    </div>
-  )
+  switch (user.status) {
+    case 'Learner':
+        return(
+            <UserPage>
+
+            </UserPage>
+        );
+        break;
+    case 'Lecturer':
+        return(
+            <CreatorPage> 
+
+            </CreatorPage>
+        );
+        break;
+
+    default:
+        return(
+            <Signup>
+              
+            </Signup>
+        );
+        break;
+}
 }

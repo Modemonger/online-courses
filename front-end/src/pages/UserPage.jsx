@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { UserContext } from '../contexts/UserContext';
 import axios from 'axios';
 import { CourseContext } from '../contexts/CoursesContext';
+import submitLike from '../util/submitLike';
 
 function compareRecent( a, b ) {
     if ( a.createdAt < b.createdAt ){
@@ -58,27 +59,6 @@ const UserPage = () => {
         setPopular(courses.sort(compareLikes));
     }, [courses])
     
-    
-
-    const submitLike = (event, course, index) => {
-        event.preventDefault();
-        // console.log(user.id, course);
-        let config = {
-            method: 'post',
-            url: `http://localhost:3001/api/courses/like/${user.id}/${course._id}`,
-        };
-          
-        axios(config)
-        .then(function (response) {
-            // console.log(response.data);
-            let newArr = [...courses];
-            newArr[index] = response.data;
-            setCourses(newArr);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-    }
 
     return (
       <div className='homepage'>
@@ -93,7 +73,7 @@ const UserPage = () => {
                         </iframe>
                         <p>
                             {course.likes.length} 
-                            <span><input type="button" name='like' value="<3" onClick={event => submitLike(event, course, index)} /></span>
+                            <span><input type="button" name='like' value="<3" onClick={event => event => setCourses(submitLike(event, course, index, user, courses))} /></span>
                         </p>
                     </div>
                 })

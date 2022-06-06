@@ -14,9 +14,11 @@ export const Signup = () => {
     useEffect(() => {
         const tmp = JSON.parse(window.localStorage.getItem('user'));
         // console.log(tmp);
-        if(tmp)
+        if(tmp){
             setUser(tmp);
             navigate('/');
+        }
+            
     }, [])
 
     const handleSubmit = (event) => {
@@ -41,8 +43,9 @@ export const Signup = () => {
             
             axios(config)
             .then(function (response) {
-                console.log(response.data);
+                // console.log(response.data);
                 window.localStorage.setItem('user', JSON.stringify(response.data.responseBody));
+                navigate('/');
             })
             .catch(function (error) {
                 console.log(error);
@@ -64,7 +67,7 @@ export const Signup = () => {
             ...user,
             [name]: value
         });
-        console.log(user);
+        // console.log(user);
     }
 
   return (
