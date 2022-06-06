@@ -8,6 +8,7 @@ const {
     deleteCourse,
     addLike,
     getRecent,
+    getPopular,
 
 } = require("../controllers/courseController");
 const { protect } = require("../middleware/authMiddleware");
@@ -17,6 +18,8 @@ router.post("/create-course", createCourse);
 router.get('/get-courses', getCourses);
 
 router.get('/get-recent-courses', getRecent);
+
+router.get('/get-popular-courses', getPopular);
 
 router.get('/get-course/:id', getCourse);
 

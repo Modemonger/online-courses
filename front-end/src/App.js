@@ -5,8 +5,11 @@ import { Signup } from './pages/Signup';
 import { Signin } from './pages/Signin';
 import { HomePage } from './pages/HomePage';
 import { Courses } from './pages/Courses';
+import { CourseProvider } from './contexts/CoursesContext';
+
 function App() {
   return (
+    <CourseProvider>
     <UserProvider>
         
         <Router>
@@ -18,7 +21,9 @@ function App() {
               <Route path='/courses' element={<Courses />} />
           </Routes>
         </Router>
+        
     </UserProvider>
+    </CourseProvider>
   );
 }
 

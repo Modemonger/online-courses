@@ -9,14 +9,16 @@ const NavBar = () => {
     const [status, setStatus] = useState('');
 
     useEffect(() => {
-        const tmp = JSON.parse(window.localStorage.getItem('user'));
-        // console.log(tmp);
-        if(tmp){
-            setUser(tmp);
-            setStatus(tmp.status);
-        }
-          
-    }, [])
+        setStatus(user.status);
+                 
+    }, [user])
+
+    const handleSingout = (e) => {
+        e.preventDefault();
+        localStorage.removeItem('user');
+        const storage = JSON.parse(window.localStorage.getItem('user'));
+        setUser({});
+    }
 
     switch (status) {
         case 'Learner':
@@ -24,6 +26,7 @@ const NavBar = () => {
                 <div className="navbar">
                     <Link to='/'>Home</Link>
                     <Link to='/courses'>Courses</Link>
+                    <Link to='/' onClick={handleSingout}>Singout</Link>
                     <SearchBar />
                 </div>
             );
@@ -33,6 +36,7 @@ const NavBar = () => {
                 <div className="navbar">
                     <Link to='/'>Home</Link>
                     <Link to='/courses'>Courses</Link>
+                    <Link to='/'>Singout</Link>
                     <SearchBar />
                 </div>
             );

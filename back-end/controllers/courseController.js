@@ -139,7 +139,7 @@ const addLike = asyncHandler(async (req, res) => {
 
 });
 
-function compare( a, b ) {
+function compareRecent( a, b ) {
     if ( a.createdAt < b.createdAt ){
       return 1;
     }
@@ -155,7 +155,33 @@ const getRecent = asyncHandler(async (req, res) => {
 
     if (courses) {
         // console.log(courses, 'courses');
-        const sortedCourses = courses.sort(compare);
+        const sortedCourses = courses.sort(compareRecent);
+        // console.log(sortedCourses, 'sorted');
+        res.status(201).send(sortedCourses);
+    } else {
+        const error = throwCustomError('Course not found', 400);
+        res.status(error.status).json(error);
+    }
+
+});
+
+function compareLikes( a, b ) {
+    if ( a.likes.length < b.likes.length ){
+      return 1;
+    }
+    if ( a.likes.length > b.likes.length ){
+      return -1;
+    }
+    return 0;
+  }
+
+const getPopular = asyncHandler(async (req, res) => {
+    
+    const courses = await Course.find({}, '-__v');
+
+    if (courses) {
+        // console.log(courses, 'courses');
+        const sortedCourses = courses.sort(compareLikes);
         // console.log(sortedCourses, 'sorted');
         res.status(201).send(sortedCourses);
     } else {
@@ -173,4 +199,6 @@ module.exports = {
     deleteCourse,
     addLike,
     getRecent,
+    getPopular,
+    
 }

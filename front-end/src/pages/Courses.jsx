@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { UserContext } from '../contexts/UserContext';
 import axios from 'axios'
+import { CourseContext } from '../contexts/CoursesContext';
 
 export const Courses = () => {
-
-    const [courses, setCourses] = useState([]);
     const { user, setUser } = useContext(UserContext);
+    const { courses, setCourses } = useContext(CourseContext);
 
     useEffect(() => {
         let config = {
