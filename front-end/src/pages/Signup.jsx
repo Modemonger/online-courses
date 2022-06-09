@@ -96,14 +96,14 @@ export const Signup = () => {
 
                 <label>
                     I am a:
-                    <div onChange={handleChange}>
+                    <div className='radio' onChange={handleChange}>
                         Learner<input type='radio' name='status' id='learner' value='Learner' />
                         Lecturer<input type='radio' name='status' id='lecturer' value='Lecturer' />
                     </div>
                     
                 </label>
                 
-                <input type={'submit'} value='SIGNUP'/>
+                <input className='signupBtn' type={'submit'} value='SIGNUP'/>
             </form>
         </div>
     </div>

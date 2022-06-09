@@ -1,15 +1,15 @@
 import axios from "axios";
 
-const submitLike = (event, course, index, user, courses) => {
+const submitLike = async (event, course, index, user, courses) => {
     event.preventDefault();
-    console.log(user.id, courses);
+    // console.log(user.id, course._id);
     let config = {
         method: 'post',
         url: `http://localhost:3001/api/courses/like/${user.id}/${course._id}`,
     };
       
-    axios(config)
-    .then(function (response) {
+    let response = axios(config)
+    .then(response => {
         // console.log(response.data);
         let newArr = [...courses];
         newArr[index] = response.data;
@@ -17,7 +17,9 @@ const submitLike = (event, course, index, user, courses) => {
     })
     .catch(function (error) {
         console.log(error);
+        throw new Error(error.message);
     });
+    return response;
 }
 
 export default submitLike;

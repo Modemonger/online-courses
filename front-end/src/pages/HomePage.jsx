@@ -14,29 +14,36 @@ export const HomePage = () => {
     if(tmp)
       setUser(tmp);
   }, [])
-  
-  switch (user.status) {
-    case 'Learner':
-        return(
-            <UserPage>
+  if(!!user && user.status)
+    switch (user.status) {
+        case 'Learner':
+            return(
+                <UserPage>
 
-            </UserPage>
-        );
-        break;
-    case 'Lecturer':
-        return(
-            <CreatorPage> 
+                </UserPage>
+            );
+            break;
+        case 'Lecturer':
+            return(
+                <CreatorPage> 
 
-            </CreatorPage>
-        );
-        break;
+                </CreatorPage>
+            );
+            break;
 
-    default:
-        return(
-            <Signup>
-              
-            </Signup>
-        );
-        break;
+        default:
+            return(
+                <Signup>
+                
+                </Signup>
+            );
+            break;
+    }
+    return(
+        <Signup>
+        
+        </Signup>
+    );
+    
 }
-}
+

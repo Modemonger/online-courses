@@ -28,7 +28,7 @@ const createCourse = asyncHandler(async (req, res) => {
             status: "success",
             message: "Course created",
             responseBody:{
-            id: course._id,
+            _id: course._id,
             owner: course.owner,
             coursename: course.coursename,
             courseDescription: course.courseDescription,

@@ -6,7 +6,8 @@ import { Signin } from './pages/Signin';
 import { HomePage } from './pages/HomePage';
 import { Courses } from './pages/Courses';
 import { CourseProvider } from './contexts/CoursesContext';
-
+import { MyCourses } from './pages/MyCourses';
+import './style/style.css'
 function App() {
   return (
     <CourseProvider>
@@ -19,6 +20,7 @@ function App() {
               <Route path='/login' element={<Signin />} />
               <Route path='/' element={<HomePage />} />
               <Route path='/courses' element={<Courses />} />
+              <Route path='/my-courses' element={<MyCourses />} />
           </Routes>
         </Router>
         

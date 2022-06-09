@@ -14,40 +14,50 @@ const NavBar = () => {
         setUser({});
         
     }
+    if(!!user)
+        switch (user.status) {
+            case 'Learner':
+                return(
+                    <div className="navbar">
+                        <Link to='/'>Home</Link>
+                        <Link to='/courses'>Courses</Link>
+                        <Link to='/' onClick={handleSingout}>Singout</Link>
+                        <SearchBar />
+                    </div>
+                );
+                break;
+            case 'Lecturer':
+                return(
+                    <div className="navbar">
+                        <Link to='/'>Home</Link>
+                        <Link to='/courses'>Courses</Link>
+                        <Link to='/my-courses'>My courses</Link>
+                        <Link to='/' onClick={handleSingout}>Singout</Link>
+                        <SearchBar />
+                    </div>
+                );
+                break;
+        
+            default:
+                return(
+                    <div className="navbar">
+                        <Link to='/'>Home</Link>
+                        <Link to='/courses'>Courses</Link>
+                        <Link to='/signup'>Signup</Link>
+                        <Link to='/login'>Login</Link> 
+                    </div>
+                );
+                break;
+        }
 
-    switch (user.status) {
-        case 'Learner':
-            return(
-                <div className="navbar">
-                    <Link to='/'>Home</Link>
-                    <Link to='/courses'>Courses</Link>
-                    <Link to='/' onClick={handleSingout}>Singout</Link>
-                    <SearchBar />
-                </div>
-            );
-            break;
-        case 'Lecturer':
-            return(
-                <div className="navbar">
-                    <Link to='/'>Home</Link>
-                    <Link to='/courses'>Courses</Link>
-                    <Link to='/' onClick={handleSingout}>Singout</Link>
-                    <SearchBar />
-                </div>
-            );
-            break;
-    
-        default:
-            return(
-                <div className="navbar">
-                    <Link to='/'>Home</Link>
-                    <Link to='/courses'>Courses</Link>
-                    <Link to='/signup'>Signup</Link>
-                    <Link to='/login'>Login</Link> 
-                </div>
-            );
-            break;
-    }
+    return(
+        <div className="navbar">
+            <Link to='/'>Home</Link>
+            <Link to='/courses'>Courses</Link>
+            <Link to='/signup'>Signup</Link>
+            <Link to='/login'>Login</Link> 
+        </div>
+    );
 };
 
 export default NavBar;

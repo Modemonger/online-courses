@@ -4,26 +4,7 @@ import { UserContext } from '../contexts/UserContext';
 import axios from 'axios';
 import { CourseContext } from '../contexts/CoursesContext';
 import submitLike from '../util/submitLike';
-
-function compareRecent( a, b ) {
-    if ( a.createdAt < b.createdAt ){
-      return 1;
-    }
-    if ( a.createdAt > b.createdAt ){
-      return -1;
-    }
-    return 0;
-  }
-
-  function compareLikes( a, b ) {
-    if ( a.likes.length < b.likes.length ){
-      return 1;
-    }
-    if ( a.likes.length > b.likes.length ){
-      return -1;
-    }
-    return 0;
-  }
+import { compareLikes, compareRecent } from '../util/compare';
 
 const UserPage = () => {
     const { user, setUser } = useContext(UserContext);
@@ -55,10 +36,17 @@ const UserPage = () => {
     }, []);
 
     useEffect(() => {
-        setRecent(courses.sort(compareRecent));
-        setPopular(courses.sort(compareLikes));
+        let sortRecent = [...courses].sort(compareRecent);
+        let sortPopular = [...courses].sort(compareLikes);
+        setRecent(sortRecent);
+        setPopular(sortPopular);
     }, [courses])
     
+    const handleLike = async (event, course) => {
+      let courseIndex = courses.indexOf(course);
+      let response = await submitLike(event, course, courseIndex, user, courses);
+      setCourses(response);
+    }
 
     return (
       <div className='homepage'>
@@ -67,15 +55,15 @@ const UserPage = () => {
               {
                 popular.map((course, index) => {
                     return <div key={course._id} className="course">
-                        <h3>{course.coursename}</h3>
-                        <p>{course.courseDescription}</p>
-                        <iframe width="420" height='250' src={course.video}>
-                        </iframe>
-                        <p>
-                            {course.likes.length} 
-                            <span><input type="button" name='like' value="<3" onClick={event => event => setCourses(submitLike(event, course, index, user, courses))} /></span>
-                        </p>
-                    </div>
+                              <h3>{course.coursename}</h3>
+                              <p>{course.courseDescription}</p>
+                              <iframe width="420" height='250' src={course.video}>
+                              </iframe>
+                              <p className='likes'>
+                                  {course.likes ? course.likes.length : 0} 
+                                  <span><input className='likeButton' type="button" name='like' value="<3" onClick={event => handleLike(event, course)} /></span>
+                              </p>
+                          </div>
                 })
             }
           </div>
@@ -84,15 +72,15 @@ const UserPage = () => {
             {
                 recent.map((course, index) => {
                     return <div key={course._id} className="course">
-                        <h3>{course.coursename}</h3>
-                        <p>{course.courseDescription}</p>
-                        <iframe width="420" height='250' src={course.video}>
-                        </iframe>
-                        <p>
-                            {course.likes.length} 
-                            <span><input type="button" name='like' value="<3" onClick={event => submitLike(event, course, index)} /></span>
-                        </p>
-                    </div>
+                              <h3>{course.coursename}</h3>
+                              <p>{course.courseDescription}</p>
+                              <iframe width="420" height='250' src={course.video}>
+                              </iframe>
+                              <p className='likes'>
+                                  {course.likes ? course.likes.length : 0} 
+                                  <span><input className='likeButton' type="button" name='like' value="<3" onClick={event => handleLike(event, course)} /></span>
+                              </p>
+                          </div>
                 })
             }
           </div>

@@ -64,9 +64,9 @@ export const Signin = () => {
     }
 
   return (
-    <div className='signin'>
-        <div className="signinCard">
-            <form className='signinForm' onSubmit={handleSubmit}>
+    <div className='signup'>
+        <div className="signupCard">
+            <form className='signupForm' onSubmit={handleSubmit}>
                 <label>
                     Username:
                     <input type={'text'} 
@@ -85,7 +85,7 @@ export const Signin = () => {
                         onChange={handleChange}/>
                 </label>
                 
-                <input type={'submit'} value="SIGNIN" />
+                <input className='signupBtn' type={'submit'} value="SIGNIN" />
             </form>
         </div>
     </div>
