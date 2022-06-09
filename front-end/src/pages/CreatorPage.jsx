@@ -7,6 +7,8 @@ import { UserContext } from '../contexts/UserContext';
 import submitLike from '../util/submitLike';
 import deleteCourse from '../util/deleteCourse';
 import { compareRecent } from '../util/compare';
+import { MyCourses } from './MyCourses';
+
 
 const CreatorPage = () => {
   const {courses, setCourses} = useContext(CourseContext);
@@ -53,28 +55,7 @@ const CreatorPage = () => {
   return (
     <div className='creatorPage'>
       <CourseForm></CourseForm>
-      <div className="courses">
-        {
-            courses.map ? courses.map((course, index) => {
-                return <div key={course._id} className="course">
-                          <h3>{course.coursename}</h3>
-                          {course.owner === user.id 
-                            ? 
-                            <input className='delete' type="button" name='delete' value="X" onClick={event => handledelete(event, course, index)} />
-                            :
-                            ''
-                          }
-                          <p>{course.courseDescription}</p>
-                          <iframe width="420" height='250' src={course.video}>
-                          </iframe>
-                          <p className='likes'>
-                              {course.likes ? course.likes.length : 0} 
-                              <span><input className='likeButton' type="button" name='like' value="<3" onClick={event => handleLike(event, course, index)} /></span>
-                          </p>
-                      </div>
-            }) : 'Loading...'
-        }
-      </div>
+      <MyCourses></MyCourses>
     </div>
   )
 }

@@ -25,6 +25,10 @@ const courseSchema = mongoose.Schema(
         type: String,
         required: [true, 'Please provide a video'],
     },
+    category: {
+      type: String,
+      required: [true, "Please give a category"],
+    },
     createdAt: { type: Date, default: Date.now },
     likes: [likesSchema],
   },

@@ -6,7 +6,7 @@ const throwCustomError = require('../utils/throwCustomError');
 require('dotenv').config({ path: __dirname + '/../.env' });
 
 const createCourse = asyncHandler(async (req, res) => {
-    const { owner, coursename, courseDescription, video } = req.body;
+    const { owner, coursename, courseDescription, category, video } = req.body;
     
     const courseExists = await Course.findOne({ video: video });
 
@@ -20,10 +20,12 @@ const createCourse = asyncHandler(async (req, res) => {
         owner: owner,
         coursename: coursename,
         courseDescription: courseDescription,
+        category: category,
         video: video,
     });
 
     if (course) {
+        // console.log(course);
         res.status(201).json({
             status: "success",
             message: "Course created",
@@ -32,6 +34,7 @@ const createCourse = asyncHandler(async (req, res) => {
             owner: course.owner,
             coursename: course.coursename,
             courseDescription: course.courseDescription,
+            category: course.category,
             video: course.video,
             },
         });

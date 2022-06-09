@@ -2,16 +2,23 @@
     margin: 0;
     padding: 0;
 }
+.color1 {color: #102339;}
+.color2 {color: #284270;}
+.color3 {color: #676ab4;}
+.color4 {color: #c699fa;}
+.color5 {color: #99bbff;}
 body{
     width: 100vw;
+    overflow-x: hidden;
     #root{
         position: relative;
         display: flex;
         // flex-direction: column;
         width: 100vw;
         min-height: 100vh;
-        justify-content: center;
-        align-items: flex-start;
+        justify-content: space-between;
+        // align-items: flex-end;
+        background-color: #284270;
         .navbar{
             position: absolute;
             top: 0;
@@ -20,18 +27,19 @@ body{
             width: 12rem;
             display: flex;
             flex-direction: column;
-            background-color: aqua;
+            background-color: #102339;
             
             *{
                 margin: 0 0 1.5rem .25rem;
                 text-decoration: none;
-                color: #525252;
+                color: #99bbff;
             }
         }
         .signup{
             display: flex;
             flex-direction: column;
             align-self: center;
+            color: #99bbff;
             .signupCard{
                 width: 35vw;
                 .signupForm{
@@ -72,12 +80,18 @@ body{
             display: flex;
             flex-direction: column;
             // width: 50vw;
-            align-self: center;
+            align-self: flex-start;
+            margin: 1rem 0 0 0;
+            color: #99bbff;
             .course{
                 position: relative;
                 display: flex;
                 flex-direction: column;
                 margin: 1rem 0 1rem 0;
+                background-color: #676ab4;
+                width: 120%;
+                padding: 2rem;
+                border-radius: 10px;
                 h3{
                     font-size: 25px;
                 }
@@ -89,6 +103,7 @@ body{
                     height: 2rem;
                     border: none;
                     border-radius: 5px;
+                    background-color: #e65050;
                 }
                 p{
                     margin: 1rem 0 1rem 0;
@@ -104,7 +119,12 @@ body{
                         margin:  0  0 0 .5rem;
                         border: none;
                         border-radius: 5px;
+                        background-color: #ff6666;
                     }
+                }
+                iframe {
+                    border: none;
+                    width: 100%;
                 }
             }
         }
@@ -113,36 +133,88 @@ body{
             flex-direction: column;
             // width: 50vw;
             align-self: center;
+            justify-content: center;
             form{
                 display: flex;
                 flex-direction: column;
+                width: 100%;
                 // justify-content: center;
                 align-items: center;
+                margin-bottom: 2rem;
+                color: #eee;
                 input{
                     height: 2rem;
                     width: 100%;
                     font-size: 20px;
+                    background-color: #676ab4;
+                    border: 0 solid #284270;
+                    border-radius: 5px;
+                    color: #eee;
                 }
                 textarea{
                     height: 8rem;
                     width: 100%;
                     font-size: 18px;
+                    resize: none;
+                    background-color: #676ab4;
+                    border: #284270;
+                    border-radius: 5px;
+                    color: #eee;
+                }
+                select{
+                    height: 3rem;
+                    font-size: 18px;
+                    background-color: #676ab4;
+                    border: #284270;
+                    border-radius: 5px;
+                    color: #eee;
                 }
                 .submit{
                     border: none;
                     width: 50%;
                     border: none;
                     border-radius: 5px;
+                    color: #eee;
+                }
+                .green{
+                    background-color: #676ab4;
                 }
                 *{
-                    margin: 1rem 0 .5rem 0;
+                    width: 100%;
+                    span{
+                        position: relative;
+                        color: #e65050;
+                    }
+                    .hide{
+                        display: none;
+                        position: absolute;
+                        top: -.3rem;
+                        left: 1.5rem;
+                    }
+                    span:hover .hide{
+                        display: inline;
+                        font-size: 12px;
+                        
+                    }
+                    *{
+                        margin: .5rem 0 .5rem 0;
+                    }
+                    
                 }
             }
-            .course{
+            .myCourses{
                 position: relative;
+                width: 100%;
                 display: flex;
+                align-items: center;
+                justify-content: center;
                 flex-direction: column;
                 margin: 1rem 0 1rem 0;
+                .course{
+                    width: 120%;
+                    padding: 2rem;
+                    border-radius: 10px;
+                }
                 h3{
                     font-size: 25px;
                 }
@@ -154,6 +226,7 @@ body{
                     height: 2rem;
                     border: none;
                     border-radius: 5px;
+                    background-color: #e65050;
                 }
                 p{
                     margin: 1rem 0 1rem 0;
@@ -163,26 +236,51 @@ body{
                     align-items: center;
                     justify-content: flex-end;
                     font-size: 18px;
+                    
                     .likeButton{
                         width: 1.5rem;
                         height: 1.5rem;
                         margin:  0  0 0 .5rem;
                         border: none;
                         border-radius: 5px;
+                        background-color: #ff6666;
                     }
+                }
+                iframe{
+                    width: 100%;
                 }
             }
         }
         .courses{
+            position: absolute;
+            top: 0;
+            left: 15rem;
             display: flex;
             flex-direction: column;
-            // width: 50vw;
+            width: 40vw;
             align-self: center;
+            align-items: center;
+            justify-content: center;
+            margin-top: 2rem;
+            color: #99bbff;
+            select{
+                height: 3rem;
+                font-size: 16px;
+                width: 100%;
+                background-color: #676ab4;
+                border: #284270;
+                border-radius: 5px;
+                color: #eee;
+            }
             .course{
                 position: relative;
                 display: flex;
                 flex-direction: column;
                 margin: 1rem 0 1rem 0;
+                background-color: #676ab4;
+                width: 90%;
+                padding: 2rem;
+                border-radius: 10px;
                 h3{
                     font-size: 25px;
                 }
@@ -209,6 +307,113 @@ body{
                         margin:  0  0 0 .5rem;
                         border: none;
                         border-radius: 5px;
+                        background-color: #ff6666;
+                    }
+                }
+                iframe{
+                    width: 100%;
+                    border: none;
+                }
+            }
+        }
+        .homepage{
+            position: absolute;
+            top: 0;
+            left: 15rem;
+            display: flex;
+            width: 70%;
+            align-self: center;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-top: 2rem;
+            .popular{
+                .course{
+                    position: relative;
+                    display: flex;
+                    flex-direction: column;
+                    margin: 1rem 0 1rem 0;
+                    background-color: #676ab4;
+                    width: 80%;
+                    padding: 2rem;
+                    border-radius: 10px;
+                    h3{
+                        font-size: 25px;
+                    }
+                    .delete{
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        width: 2rem;
+                        height: 2rem;
+                        border: none;
+                        border-radius: 5px;
+                    }
+                    p{
+                        margin: 1rem 0 1rem 0;
+                    }
+                    .likes{
+                        display: flex;
+                        align-items: center;
+                        justify-content: flex-end;
+                        font-size: 18px;
+                        .likeButton{
+                            width: 1.5rem;
+                            height: 1.5rem;
+                            margin:  0  0 0 .5rem;
+                            border: none;
+                            border-radius: 5px;
+                            background-color: #ff6666;
+                        }
+                    }
+                    iframe{
+                        width: 100%;
+                        border: none;
+                    }
+                }
+            }
+            .recent{
+                .course{
+                    position: relative;
+                    display: flex;
+                    flex-direction: column;
+                    margin: 1rem 0 1rem 0;
+                    background-color: #676ab4;
+                    width: 80%;
+                    padding: 2rem;
+                    border-radius: 10px;
+                    h3{
+                        font-size: 25px;
+                    }
+                    .delete{
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        width: 2rem;
+                        height: 2rem;
+                        border: none;
+                        border-radius: 5px;
+                    }
+                    p{
+                        margin: 1rem 0 1rem 0;
+                    }
+                    .likes{
+                        display: flex;
+                        align-items: center;
+                        justify-content: flex-end;
+                        font-size: 18px;
+                        .likeButton{
+                            width: 1.5rem;
+                            height: 1.5rem;
+                            margin:  0  0 0 .5rem;
+                            border: none;
+                            border-radius: 5px;
+                            background-color: #ff6666;
+                        }
+                    }
+                    iframe{
+                        width: 100%;
+                        border: none;
                     }
                 }
             }
