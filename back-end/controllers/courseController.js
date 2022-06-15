@@ -105,40 +105,51 @@ const addLike = asyncHandler(async (req, res) => {
 
     const course = await Course.findOne({_id: courseId}, '-__v');
 
-    if(!course.likes.filter(e => e.userId.toString() === mongoose.Types.ObjectId(userId).toString()).length > 0){
+    let response;
+    // console.log(course.likes.filter(e => e.userId.toString() == mongoose.Types.ObjectId(userId).toString()));
+
+
+    if(course.likes.filter(e => e.userId.toString() == mongoose.Types.ObjectId(userId).toString()).length <= 0){
         course.likes.push({userId: userId});
+
         await course.save(function (err) {
             if (err) {
                 const error = throwCustomError('Course not found', 400);
                 res.status(error.status).json(error);
-                return
+                response = error;
+                
+                // return
             }
         });
-
+        // response = course;
+        // console.log('add', course.likes.filter(e => e.userId.toString() == mongoose.Types.ObjectId(userId).toString()));
         res.status(201).send(course);
         return
     }
-    
-    if(course.likes.filter(e => e.userId.toString() === mongoose.Types.ObjectId(userId).toString()).length > 0){
+
+    if(course.likes.filter(e => e.userId.toString() == mongoose.Types.ObjectId(userId).toString()).length > 0){
         const like = course.likes.filter(e => e.userId.toString() === mongoose.Types.ObjectId(userId).toString());
 
         const index = course.likes.indexOf(like[0]);
 
         course.likes.splice(index, 1);
+        // console.log(index, course);
         await course.save(function (err) {
             if (err) {
                 const error = throwCustomError('Course not found', 400);
                 res.status(error.status).json(error);
-                return
+                response = error;
+                // return
             }
         });
-
+        // response = course;
+        // console.log('remove', course.likes.filter(e => e.userId.toString() == mongoose.Types.ObjectId(userId).toString()));
         res.status(201).send(course);
         return
     }
-    
-    const error = throwCustomError('Encountered an issue', 400);
-    res.status(error.status).json(error);
+
+    // const error = throwCustomError('Encountered an issue', 400);
+    // res.status(response.status || 201).json(response);
 
 });
 
