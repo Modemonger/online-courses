@@ -39,9 +39,9 @@ export const Courses = () => {
     
 
     const handleLike = async (event, course, index) => {
-        let courseIndex = courses.indexOf(course);
-        let response = await submitLike(event, course, courseIndex, user, courses);
-        setCourses(response);
+        // let courseIndex = courses.indexOf(course);
+        let response = await submitLike(event, course, index, user, categoryCourses);
+        setCategoryCourses(response);
     }
 
     const handleCategory = (event) => {

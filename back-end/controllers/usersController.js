@@ -7,10 +7,27 @@ const throwCustomError = require("../utils/throwCustomError");
 require("dotenv").config({ path: __dirname + "/../.env" });
 
 // function to create a token
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: "30d",
-  });
+const generateToken = (id, status) => {
+  switch (status) {
+    case 'learner':
+      return jwt.sign({ id }, process.env.USER_SECRET, {
+        expiresIn: "30d",
+      });
+    case 'lecturer':
+      return jwt.sign({ id }, process.env.CREATOR_SECRET, {
+        expiresIn: "30d",
+      });
+    case 'admin':
+      return jwt.sign({ id }, process.env.ADMIN_SECRET, {
+        expiresIn: "30d",
+      });
+  
+    default:
+      return jwt.sign({ id }, process.env.USER_SECRET, {
+        expiresIn: "30d",
+      });
+  }
+  
 };
 
 function checkPwd(str) {
@@ -77,7 +94,7 @@ const registerUser = asyncHandler(async (req, res) => {
         username: user.username,
         email: user.email,
         status: user.status,
-        token: generateToken(user._id),
+        token: generateToken(user._id, user.status),
       },
     });
   } else {
@@ -106,7 +123,7 @@ const loginUser = asyncHandler(async (req, res) => {
           username: user.username,
           email: user.email,
           status: user.status,
-          token: generateToken(user._id),
+          token: generateToken(user._id, user.status),
         },
       });
     } else {

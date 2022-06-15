@@ -3,7 +3,9 @@ const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
 const throwCustomError = require("../utils/throwCustomError");
 
-const protect = asyncHandler(async (req, res, next) => {
+///////////// Protect for all ///////////////////
+
+const protect = asyncHandler(async (secret ,req, res, next) => {
   let token;
   // check for token in the headers (Using Bearer for use with postman)
   if (
@@ -14,7 +16,8 @@ const protect = asyncHandler(async (req, res, next) => {
       // split the Bearer part from the token
       token = req.headers.authorization.split(" ")[1];
       // decode
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      
+      const decoded = jwt.verify(token, secret);
 
       // because we use the user id to make a token we can ger id from decoded string
       req.user = await User.findById(decoded.id).select("-password");
@@ -33,4 +36,40 @@ const protect = asyncHandler(async (req, res, next) => {
   }
 });
 
-module.exports = { protect };
+//////////// Breakout functions /////////////
+
+const userProtect = asyncHandler(async (req, res, next) => {
+  let token;
+  protect(process.env.USER_SECRET, req, res, next);
+});
+
+const creatorProtect = asyncHandler(async (req, res, next) => {
+  let token;
+  protect(process.env.CREATOR_SECRET, req, res, next);
+});
+
+const adminProtect = asyncHandler(async (req, res, next) => {
+  let token;
+  protect(process.env.ADMIN_SECRET, req, res, next);
+});
+
+////////// Middleware object //////////////
+
+const middleware ={
+  userAuthentication: (req, res, next) => {
+    userProtect(req, res, next);
+    next();
+  },
+  creatorAuthentication: (req, res, next) => {
+    creatorProtect(req, res, next);
+    next();
+  },
+  adminAuthentication: (req, res, next) => {
+    adminProtect(req, res, next);
+    next();
+  },
+}
+
+module.exports = { 
+  middleware
+ };

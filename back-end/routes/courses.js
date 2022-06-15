@@ -11,9 +11,11 @@ const {
     getPopular,
 
 } = require("../controllers/courseController");
-const { protect } = require("../middleware/authMiddleware");
+const { 
+    middleware
+} = require("../middleware/authMiddleware");
 
-router.post("/create-course", createCourse);
+router.post("/create-course", middleware.creatorAuthentication || middleware.adminAuthentication, createCourse);
 
 router.get('/get-courses', getCourses);
 
@@ -23,10 +25,10 @@ router.get('/get-popular-courses', getPopular);
 
 router.get('/get-course/:id', getCourse);
 
-router.get('/get-user-courses/:id', getUserCourses);
+router.get('/get-user-courses/:id', middleware.creatorAuthentication || middleware.adminAuthentication, getUserCourses);
 
-router.delete('/delete-course/:id', deleteCourse);
+router.delete('/delete-course/:id', middleware.creatorAuthentication || middleware.adminAuthentication, deleteCourse);
 
-router.post('/like/:userId/:courseId', addLike);
+router.post('/like/:userId/:courseId', middleware.userAuthentication || middleware.creatorAuthentication || middleware.adminAuthentication, addLike);
 
 module.exports = router;
