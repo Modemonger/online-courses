@@ -205,6 +205,26 @@ const getPopular = asyncHandler(async (req, res) => {
 
 });
 
+const getLikedCourses = asyncHandler(async (req, res) => {
+    
+    const { userId } = req.params;
+
+    const courses = await Course.find({});
+    // console.log(courses);
+    let newArr = [];
+    courses.forEach(course => {
+
+        if(course.likes.filter(e => e.userId.toString() == mongoose.Types.ObjectId(userId).toString()).length > 0){
+            // console.log(course);
+            newArr.push(course);
+        }
+    });
+
+    // console.log(newArr);
+    res.status(201).json(newArr);
+
+});
+
 module.exports = {
     createCourse,
     getCourses,
@@ -214,5 +234,6 @@ module.exports = {
     addLike,
     getRecent,
     getPopular,
-    
+    getLikedCourses,
+
 }

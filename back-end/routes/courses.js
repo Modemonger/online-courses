@@ -9,6 +9,7 @@ const {
     addLike,
     getRecent,
     getPopular,
+    getLikedCourses,
 
 } = require("../controllers/courseController");
 const { 
@@ -24,6 +25,8 @@ router.get('/get-recent-courses', getRecent);
 router.get('/get-popular-courses', getPopular);
 
 router.get('/get-course/:id', getCourse);
+
+router.get('/get-liked-courses/:userId', getLikedCourses);
 
 router.get('/get-user-courses/:id', middleware.creatorAuthentication || middleware.adminAuthentication, getUserCourses);
 
