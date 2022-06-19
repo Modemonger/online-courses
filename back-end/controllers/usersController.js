@@ -4,6 +4,11 @@ const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
 const mongoose = require("mongoose");
 const throwCustomError = require("../utils/throwCustomError");
+const {
+  findUserByName,
+  findUserByEmail,
+
+} = require('../services/userServices');
 require("dotenv").config({ path: __dirname + "/../.env" });
 
 // function to create a token
@@ -60,9 +65,9 @@ const registerUser = asyncHandler(async (req, res) => {
   console.log(username, email, password, status);
   //checkPwd(password);
   
-  const userExists = await User.findOne({ email: email });
+  const userExists = await findUserByEmail(email);
   
-  const userNameTaken = await User.findOne({ username: username });
+  const userNameTaken = await findUserByName(username);
 
   if (userExists) {
     const error = throwCustomError("Email already exists", 400);
@@ -106,7 +111,7 @@ const registerUser = asyncHandler(async (req, res) => {
 const loginUser = asyncHandler(async (req, res) => {
   const { username, password } = req.body;
 
-  const user = await User.findOne({ username: username });
+  const user = await findUserByName(username);
 
   if (user) {
     const [salt, key] = user.password.split(":");

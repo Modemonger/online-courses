@@ -3,6 +3,10 @@ const User = require('../models/userModel');
 const Course = require('../models/coursesModel');
 const mongoose = require('mongoose');
 const throwCustomError = require('../utils/throwCustomError');
+const {
+    getAllCourses,
+
+} = require('../services/coursesServices');
 require('dotenv').config({ path: __dirname + '/../.env' });
 
 const createCourse = asyncHandler(async (req, res) => {
@@ -47,7 +51,7 @@ const createCourse = asyncHandler(async (req, res) => {
 
 const getCourses = asyncHandler(async (req, res) => {
 
-    const courses = await Course.find({}, '-__v');
+    const courses = await getAllCourses();
   
     if (courses) {
         // console.log(courses)
@@ -165,7 +169,7 @@ function compareRecent( a, b ) {
 
 const getRecent = asyncHandler(async (req, res) => {
     
-    const courses = await Course.find({}, '-__v');
+    const courses = await getAllCourses();
 
     if (courses) {
         // console.log(courses, 'courses');
@@ -191,7 +195,7 @@ function compareLikes( a, b ) {
 
 const getPopular = asyncHandler(async (req, res) => {
     
-    const courses = await Course.find({}, '-__v');
+    const courses = await getAllCourses();
 
     if (courses) {
         // console.log(courses, 'courses');
@@ -209,7 +213,7 @@ const getLikedCourses = asyncHandler(async (req, res) => {
     
     const { userId } = req.params;
 
-    const courses = await Course.find({});
+    const courses = await getAllCourses();
     // console.log(courses);
     let newArr = [];
     courses.forEach(course => {
