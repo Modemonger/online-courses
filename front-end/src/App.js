@@ -15,6 +15,7 @@ function App() {
         
         <Router>
           <NavBar />
+          <a className='navBtn' href='#sideBar'>=</a>
           <Routes>
               <Route path='/signup' element={<Signup />} />
               <Route path='/login' element={<Signin />} />

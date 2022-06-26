@@ -18,21 +18,25 @@ const NavBar = () => {
         switch (user.status) {
             case 'Learner':
                 return(
-                    <div className="navbar">
+                    <div id='sideBar' className="navbar">
                         <Link to='/'>Home</Link>
                         <Link to='/courses'>Courses</Link>
                         <Link to='/' onClick={handleSingout}>Singout</Link>
+                        <a href='#'><span className='backdrop'>X</span></a>
                         <SearchBar />
+                        
                     </div>
                 );
                 break;
             case 'Lecturer':
                 return(
-                    <div className="navbar">
+                    <div id='sideBar' className="navbar">
+                        
                         <Link to='/'>Home</Link>
                         <Link to='/courses'>Courses</Link>
                         <Link to='/my-courses'>My courses</Link>
                         <Link to='/' onClick={handleSingout}>Singout</Link>
+                        <a href='#'><span className='backdrop'>X</span></a>
                         <SearchBar />
                     </div>
                 );
@@ -40,22 +44,26 @@ const NavBar = () => {
         
             default:
                 return(
-                    <div className="navbar">
+                    <div id='sideBar' className="navbar">
+                        
                         <Link to='/'>Home</Link>
                         <Link to='/courses'>Courses</Link>
                         <Link to='/signup'>Signup</Link>
                         <Link to='/login'>Login</Link> 
+                        <a href='#'><span className='backdrop'>X</span></a>
                     </div>
                 );
                 break;
         }
 
     return(
-        <div className="navbar">
+        <div id='sideBar' className="navbar">
+           
             <Link to='/'>Home</Link>
             <Link to='/courses'>Courses</Link>
             <Link to='/signup'>Signup</Link>
             <Link to='/login'>Login</Link> 
+            <a href='#'><span className='backdrop'>X</span></a>
         </div>
     );
 };

@@ -32,6 +32,6 @@ router.get('/get-user-courses/:id', middleware.creatorAuthentication || middlewa
 
 router.delete('/delete-course/:id', middleware.creatorAuthentication || middleware.adminAuthentication, deleteCourse);
 
-router.post('/like/:userId/:courseId', middleware.userAuthentication || middleware.creatorAuthentication || middleware.adminAuthentication, addLike);
+router.post('/like/:userId/:courseId',  addLike);
 
 module.exports = router;

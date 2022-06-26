@@ -18,7 +18,7 @@ const generateToken = (id, status) => {
       return jwt.sign({ id }, process.env.USER_SECRET, {
         expiresIn: "30d",
       });
-    case 'lecturer':
+    case 'Lecturer':
       return jwt.sign({ id }, process.env.CREATOR_SECRET, {
         expiresIn: "30d",
       });

@@ -6,9 +6,11 @@ const submitLike = async (event, course, index, user, courses) => {
     let config = {
         method: 'post',
         url: `http://localhost:3001/api/courses/like/${user.id}/${course._id}`,
-        headers: { 
-            'Authorization': `Bearer ${user.token}`,
-        },
+        // headers: { 
+        //     'Authorization': `Bearer ${user.token}`,
+        //     "Content-Type": "application/json",
+        //     accept: "application/json",
+        // },
     };
       
     let response = await axios(config)
